@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdbool.h>
 
 /* 显示数组元素 */
 void show_array(int *array, int length)
@@ -14,6 +15,14 @@ void show_array(int *array, int length)
     for(int i = 0; i < length; i++)
         printf("%d ", array[i]);
     puts("");
+}
+
+/* 交两个元素的值 */
+void swap(int* first, int* second)
+{
+    int temp = *first;
+    *first = *second;
+    *second = temp;
 }
 /**
  * 1、选择排序法 
@@ -70,7 +79,7 @@ void select_sort_F(int array[], int length)
  *  交换到最后 
  **/
 
-void buble_sort_T(int array[], int length)
+void bubble_sort_T(int array[], int length)
 {
     int temp;
     for(int i = 0; i < length - 1; i++)
@@ -88,7 +97,7 @@ void buble_sort_T(int array[], int length)
     }
 }
 
-void buble_sort_F(int array[], int length)
+void bubble_sort_F(int array[], int length)
 {
     int temp;
     for(int i = 0; i < length - 1; i++)
@@ -105,6 +114,45 @@ void buble_sort_F(int array[], int length)
         show_array(array,length);
     }
 }
+
+void bubbleSort(int array[], int length)
+{
+    bool is_sorted = false;
+    while(!is_sorted)
+    {
+        is_sorted = true;
+        for(int i = 0; i < length - 1; i++)
+        {
+            if(array[i] > array[i + 1])
+            {
+                int temp = array[i];
+                array[i] = array[i + 1];
+                array[i + 1] = temp;
+                is_sorted = false;
+            }
+        }
+    }   
+}
+
+void bubble_sort(int array[], int length)
+{
+    if (length == 1)
+        return;
+    bool swapped = false;
+    for(int i = 0; i < length - 1; i++)
+    {
+        if(array[i] > array[i + 1])
+        {
+            int temp = array[i];
+            array[i] = array[i + 1];
+            array[i + 1] = temp;
+            swapped = true;
+        }
+    }
+    if(swapped)
+        bubble_sort(array, length - 1);
+}
+
 
 /* 交换排序法 */
 
@@ -259,14 +307,14 @@ void select_sort_test(int arr[], int length)
     show_array(array, length);
 }
 
-void buble_sort_test(int arr[], int length)
+void bubble_sort_test(int arr[], int length)
 {
     int array[length];
     memcpy(array,arr,4 *length);
     printf("排序前的数组: \n");
     show_array(array, length);
     printf("升序排序过程(buble sort):\n");
-    buble_sort_T(array, length);
+    bubble_sort_T(array, length);
     printf("排序后的数组(buble sort):\n");
     show_array(array, length);
 
@@ -274,7 +322,7 @@ void buble_sort_test(int arr[], int length)
     printf("排序前的数组: \n");
     show_array(array, length);
     printf("降序排序过程(buble sort):\n");
-    buble_sort_F(array, length);
+    bubble_sort_F(array, length);
     printf("排序后的数组(buble sort):\n");
     show_array(array, length); 
 }
@@ -347,7 +395,7 @@ int main(int argc, char* argv[])
     int length = sizeof(array) / sizeof(int);
     select_sort_test(array, length);
     puts("\n=================================");
-    buble_sort_test(array, length);
+    bubble_sort_test(array, length);
     puts("\n=================================");
     transfer_sort_test(array, length);
     puts("\n=================================");
