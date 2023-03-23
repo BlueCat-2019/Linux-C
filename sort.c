@@ -105,7 +105,136 @@ void buble_sort_F(int array[], int length)
     }
 }
 
+/* 交换排序法 */
 
+void transfer_sort_T(int array[], int length)
+{
+    int temp;
+    for(int i = 0; i < length - 1; i++)
+    {
+        for(int j = i + 1; j < length; j++)
+        {
+            if(array[i] > array[j])
+            {
+                temp = array[i];
+                array[i] = array[j];
+                array[j] = temp;
+            }
+        }
+        show_array(array,length);
+    }
+}
+
+void transfer_sort_F(int array[], int length)
+{
+    int temp;
+    for(int i = 0; i < length - 1; i++)
+    {
+        for(int j = i + 1; j < length; j++)
+        {
+            if(array[i] < array[j])
+            {
+                temp = array[i];
+                array[i] = array[j];
+                array[j] = temp;
+            }
+        }
+        show_array(array,length);
+    }
+}
+
+
+/* 插入排序法 */
+void insert_sort_T(int array[], int length)
+{
+    int temp;
+    int pos;
+    for(int i = 1; i < length; i++)
+    {
+        temp = array[i];
+        pos = i - 1;
+        while((pos >= 0) && (temp < array[pos]))
+        {
+            array[pos + 1] = array[pos];
+            pos--;
+        }
+        array[pos + 1] = temp;
+        show_array(array,length);
+    }
+}
+
+void insert_sort_F(int array[], int length)
+{
+    int temp;
+    int pos;
+    for(int i = 1; i < length; i++)
+    {
+        temp = array[i];
+        pos = i - 1;
+        while((pos >= 0) && (temp > array[pos]))
+        {
+            array[pos + 1] = array[pos];
+            pos--;
+        }
+        array[pos + 1] = temp;
+        show_array(array,length);
+    }
+}
+
+/* 折半排序法 */
+void reduce_sort_T(int array[], int left, int right)
+{
+    int length = 10;
+    int middle, temp;
+    int i = left, j = right;
+    middle = array[(left + right) / 2];/* 求中间元素的值 */
+    do {
+        while(array[i] < middle && i < right)
+        i++;
+        while(array[j] > middle && j > left)
+        j--;
+        if(i <= j)
+        {
+            temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+            i++,j--;
+        }
+    }while(i <= j); /* i <= j 结束 */
+
+    if(left < j)
+        reduce_sort_T(array,left, j);
+    if(right > i)
+        reduce_sort_T(array,i, right); 
+    show_array(array,length);  
+}
+
+void reduce_sort_F(int array[], int left, int right)
+{
+    int length = 10;
+    int middle, temp;
+    int i = left, j = right;
+    middle = array[(left + right) / 2];/* 求中间元素的值 */
+    do {
+        while(array[i] > middle && i < right)
+        i++;
+        while(array[j] < middle && j > left)
+        j--;
+        if(i <= j)
+        {
+            temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+            i++,j--;
+        }
+    }while(i <= j); /* i <= j 结束 */
+
+    if(left < j)
+        reduce_sort_F(array,left, j);
+    if(right > i)
+        reduce_sort_F(array,i, right);
+    show_array(array,length);
+}
 
 
 /* test for sort */
@@ -149,6 +278,66 @@ void buble_sort_test(int arr[], int length)
     show_array(array, length); 
 }
 
+void transfer_sort_test(int arr[], int length)
+{
+    int array[length];
+    memcpy(array,arr,4 *length);
+    printf("排序前的数组: \n");
+    show_array(array, length);
+    printf("升序排序过程(transfer sort):\n");
+    transfer_sort_T(array, length);
+    printf("排序后的数组(transfer sort):\n");
+    show_array(array, length);
+
+    memcpy(array,arr,4 *length);
+    printf("排序前的数组: \n");
+    show_array(array, length);
+    printf("降序排序过程(transfer sort):\n");
+    transfer_sort_F(array, length);
+    printf("排序后的数组(transfer sort):\n");
+    show_array(array, length); 
+}
+
+void insert_sort_test(int arr[], int length)
+{
+    int array[length];
+    memcpy(array,arr,4 *length);
+    printf("排序前的数组: \n");
+    show_array(array, length);
+    printf("升序排序过程(insert sort):\n");
+    insert_sort_T(array, length);
+    printf("排序后的数组(insert sort):\n");
+    show_array(array, length);
+
+    memcpy(array,arr,4 *length);
+    printf("排序前的数组: \n");
+    show_array(array, length);
+    printf("降序排序过程(insert sort):\n");
+    insert_sort_F(array, length);
+    printf("排序后的数组(insert sort):\n");
+    show_array(array, length); 
+}
+
+void reduce_sort_test(int arr[], int left, int right, int length)
+{
+    int array[length];
+    memcpy(array,arr,4 *length);
+    printf("排序前的数组: \n");
+    show_array(array, length);
+    printf("升序排序过程(reduce sort):\n");
+    reduce_sort_T(array, left, right);
+    printf("排序后的数组(reduce sort):\n");
+    show_array(array, length);
+
+    memcpy(array,arr,4 *length);
+    printf("排序前的数组: \n");
+    show_array(array, length);
+    printf("降序排序过程(reduce sort):\n");
+    reduce_sort_F(array, left, right);
+    printf("排序后的数组(reduce sort):\n");
+    show_array(array, length); 
+}
+
 
 int main(int argc, char* argv[])
 {
@@ -158,5 +347,11 @@ int main(int argc, char* argv[])
     select_sort_test(array, length);
     puts("\n=================================");
     buble_sort_test(array, length);
+    puts("\n=================================");
+    transfer_sort_test(array, length);
+    puts("\n=================================");
+    insert_sort_test(array, length);
+    puts("\n=================================");
+    reduce_sort_test(array, 0, 9, length);
     return 0;
 }
