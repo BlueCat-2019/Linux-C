@@ -2,6 +2,7 @@
  * 传入参数: array[], 待排序的数组
  *           length, 排序的数组长度 
  * 返回值: void 
+ * T: 升序, F 降序
  */
 
 #include <stdio.h>
